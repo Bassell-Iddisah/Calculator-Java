@@ -6,7 +6,9 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.input.InputEvent;
 import javafx.scene.layout.Pane;
+import javafx.application.Platform;
 
 public class HelloController {
     StringBuilder displayText = new StringBuilder();
@@ -90,8 +92,88 @@ public class HelloController {
     private Button timesButton;
 
     @FXML
-    public void initialize() {
+    private Pane rootPane;
 
+    @FXML
+    public void initialize() {
+        rootPane.setOnKeyPressed(event -> {
+            switch (event.getCode()) {
+                case DIGIT0:
+                case NUMPAD0:
+                    appendDigit("0");
+                    break;
+                case DIGIT1:
+                case NUMPAD1:
+                    appendDigit("1");
+                    break;
+                case DIGIT2:
+                case NUMPAD2:
+                    appendDigit("2");
+                    break;
+                case DIGIT3:
+                case NUMPAD3:
+                    appendDigit("3");
+                    break;
+                case DIGIT4:
+                case NUMPAD4:
+                    appendDigit("4");
+                    break;
+                case DIGIT5:
+                case NUMPAD5:
+                    appendDigit("5");
+                    break;
+                case DIGIT6:
+                case NUMPAD6:
+                    appendDigit("6");
+                    break;
+                case DIGIT7:
+                case NUMPAD7:
+                    appendDigit("7");
+                    break;
+                case DIGIT8:
+                case NUMPAD8:
+                    appendDigit("8");
+                    break;
+                case DIGIT9:
+                case NUMPAD9:
+                    appendDigit("9");
+                    break;
+                case ESCAPE:
+                    clearContent();
+                    break;
+                case BACK_SPACE:
+                    deleteCharacter();
+                    break;
+                case DIVIDE:
+                    appendDigit("/");
+                    break;
+                case SUBTRACT:
+                    appendDigit("-");
+                    break;
+                case ADD:
+                    appendDigit("+");
+                    break;
+                case MULTIPLY:
+                    appendDigit("x");
+                    break;
+                case ASTERISK:
+                    appendDigit("x");
+                    break;
+                case OPEN_BRACKET:
+                    appendDigit("[");
+                    break;
+                case CLOSE_BRACKET:
+                    appendDigit("]");
+                    break;
+                case PERIOD:
+                    appendDigit(".");
+                    break;
+                // Add more cases for other keys if needed
+            }
+        });
+
+        // Request focus so key events are captured
+        Platform.runLater(() -> rootPane.requestFocus());
     }
 
     @FXML
@@ -136,10 +218,15 @@ public class HelloController {
         questionLabel.setText(displayText.toString());
     }
 
+//    @FXML
+//    void button7Handler(ActionEvent event) {
+//        displayText.append("7");
+//        questionLabel.setText(displayText.toString());
+//    }
+
     @FXML
-    void button7Handler(ActionEvent event) {
-        displayText.append("7");
-        questionLabel.setText(displayText.toString());
+    void button7Handler(InputEvent inputEvent) {
+        appendDigit("7");
     }
 
     @FXML
@@ -168,16 +255,12 @@ public class HelloController {
 
     @FXML
     void deleteButtonHandler(ActionEvent event) {
-        if (!displayText.isEmpty()) {
-            displayText.deleteCharAt(displayText.length() - 1);
-        }
-        questionLabel.setText(displayText.toString());
+        deleteCharacter();
     }
 
     @FXML
     void clearButtonHandler(ActionEvent event) {
-        this.displayText = new StringBuilder("");
-        questionLabel.setText(displayText.toString());
+        clearContent();
     }
 
     @FXML
@@ -213,5 +296,22 @@ public class HelloController {
     @FXML
     void equalsButtonHandler(ActionEvent event) {
         // Parse stringbuilder then compute answer
+    }
+
+    private void appendDigit(String digit) {
+        displayText.append(digit);
+        questionLabel.setText(displayText.toString());
+    }
+
+    private void clearContent() {
+        this.displayText = new StringBuilder("");
+        questionLabel.setText(displayText.toString());
+    }
+
+    private void deleteCharacter() {
+        if (!displayText.isEmpty()) {
+            displayText.deleteCharAt(displayText.length() - 1);
+        }
+        questionLabel.setText(displayText.toString());
     }
 }
